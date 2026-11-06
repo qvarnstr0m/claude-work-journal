@@ -39,16 +39,27 @@ git:
     - ~/projects        # repos under here that show activity in the week are included
   authors: []           # e.g. ["jane@work.com", "jane@private.com"]
 
-# Jira via the Atlassian MCP connector. Leave cloud_id empty to let the skill
-# look it up with getAccessibleAtlassianResources.
-jira:
-  enabled: false
-  cloud_id: ""
-
-# Confluence pages with running meeting notes (optional).
-confluence:
-  enabled: false
-  meeting_note_pages: []   # e.g. [{ id: "123456789", title: "Team / Meeting notes" }]
+# Extra sources: issue trackers, wikis, meeting notes, calendars... anything
+# Claude can reach through a connector (MCP) or a CLI in your session.
+# `how` is a plain-language instruction: what to fetch and where. Claude
+# figures out the tool calls. Add as many as you like; disabled ones are skipped.
+sources:
+  - name: GitHub
+    enabled: false
+    how: "gh CLI. PRs I opened, reviewed or merged this week, and issues I commented on, in the repos above."
+  - name: Jira
+    enabled: false
+    how: "Atlassian connector. Issues I was assignee or reporter on, updated this week."
+  - name: Meeting notes
+    enabled: false
+    how: "Confluence page 123456789 ('Team / Meeting notes'). Meetings dated this week: agenda, decisions, notes."
+  # More examples:
+  # - name: Linear
+  #   enabled: true
+  #   how: "Linear connector. Issues assigned to me that changed state this week, team ENG."
+  # - name: Calendar
+  #   enabled: true
+  #   how: "Google Calendar connector. Meetings I attended this week (titles only, skip private events)."
 
 # Time tracking tool, if any. The skill never invents hours; this is only
 # mentioned in the report so you know what's missing.

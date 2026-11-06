@@ -6,7 +6,7 @@ You say *"write the journal for this week"*, and Claude:
 
 1. Reads your **Claude Code prompt history** for the week. This is usually the best record of what you worked on.
 2. Collects your **git commits** across your repos.
-3. Optionally pulls **Jira issues** and **Confluence meeting notes** through the Atlassian connector.
+3. Optionally pulls from **any issue tracker, wiki or calendar** you have a connector or CLI for: GitHub, Jira, Linear, Confluence, Notion, Google Calendar…
 4. Writes `weeks/2026/2026-W10.md` from the template, then commits it.
 
 See [`examples/2026-W10.md`](examples/2026-W10.md) for a sample result (fictional).
@@ -36,14 +36,14 @@ The skill is deliberately conservative:
    - your projects and their repos (product, client, hobby... anything)
    - anything to keep out of the journal (`exclude`)
    - journal and reply language
-   - enable Jira/Confluence if you use the [Atlassian connector](https://support.atlassian.com/rovo/docs/getting-started-with-the-atlassian-remote-mcp-server/)
+   - extra `sources`: enable the examples or add your own. Each one is a single line in plain language saying what to fetch, and Claude uses whatever connector or CLI you have for it
 3. Open Claude Code in the repo and ask:
    ```
    write the journal for this week
    ```
    or `fill in week 9`, or in any other language.
 
-Requirements: Claude Code and `python3` (3.8+, standard library only). With Jira and Confluence disabled, no connectors are needed.
+Requirements: Claude Code and `python3` (3.8+, standard library only). Extra sources need their connector or CLI (e.g. `gh` for GitHub); without them, prompt history and git work on their own.
 
 ## Layout
 
@@ -59,7 +59,8 @@ examples/                        a fictional week for reference
 ## Customising
 
 - **Template**: change the sections in `templates/weekly-template.md`. The skill follows whatever headings it finds there.
-- **Rules and sources**: edit `.claude/skills/weekly-journal/SKILL.md`. It's plain instructions, so you can add a source (Linear, GitHub issues, a calendar connector) by describing how to query it.
+- **Sources**: add an entry under `sources` in `journal.config.yml`. If a source needs more detailed handling, add a note under "Known sources" in `.claude/skills/weekly-journal/SKILL.md`.
+- **Rules**: everything else in `SKILL.md` is plain instructions you can edit.
 
 ## Privacy
 

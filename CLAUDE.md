@@ -1,6 +1,6 @@
 # Work journal
 
-This repo is a personal work journal: one Markdown file per ISO week in `weeks/YYYY/YYYY-WNN.md`, written by the `weekly-journal` skill from Claude Code history, git logs and (optionally) Jira and Confluence.
+This repo is a personal work journal: one Markdown file per ISO week in `weeks/YYYY/YYYY-WNN.md`, written by the `weekly-journal` skill from Claude Code history, git logs and any extra sources configured in `journal.config.yml`.
 
 - Settings are in `journal.config.yml`. Read it before writing or changing a journal.
 - `templates/weekly-template.md` defines the sections of a week file.

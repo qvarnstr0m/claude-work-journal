@@ -1,6 +1,6 @@
 ---
 name: weekly-journal
-description: Fill in the work journal for a given week (weeks/YYYY/YYYY-WNN.md) from Claude Code history, git logs and, if configured, Jira and Confluence meeting notes. Use when the user asks to write, fill in or update the journal for a week ("write the journal for week 41", "fill in this week's journal", "ta vecka 41").
+description: Fill in the work journal for a given week (weeks/YYYY/YYYY-WNN.md) from Claude Code history, git logs and any extra sources configured in journal.config.yml (issue trackers, meeting notes, calendars). Use when the user asks to write, fill in or update the journal for a week ("write the journal for week 41", "fill in this week's journal", "ta vecka 41").
 ---
 
 # Weekly work journal
@@ -29,18 +29,24 @@ for r in <repos>; do
 ```
 `<author>` comes from `git.authors` (repeat `--author` for each), or from `git config user.email` / `user.name` when the list is empty.
 
-**Jira** (only if `jira.enabled`; Atlassian MCP connector). Use `jira.cloud_id`, or look it up once with `getAccessibleAtlassianResources`.
-```
-(assignee = currentUser() OR reporter = currentUser() OR assignee was currentUser() DURING ("<mon>","<sun>"))
-AND updated >= "<mon>" ORDER BY updated DESC
-```
-Request only `summary`, `status` and `created`. Ask for `description` only for issues you need to understand. Check `created` before claiming an issue was created during the week.
-
-**Confluence meeting notes** (only if `confluence.enabled`): read each page in `confluence.meeting_note_pages` with `getConfluenceContent` (full detail, markdown). Take the meetings dated inside the week, including agenda, decisions and notes. Dates on running note pages can be wrong: cross-check with issues mentioned in an entry (for example an issue created after the stated date), put the meeting in the week the evidence points to, and tell the user.
+**Extra sources**: for each entry in `sources` with `enabled: true`, follow its `how` instruction using whatever connector (MCP tool) or CLI fits. If you can't find a matching tool, skip the source and say so in the report. Limit every query to the week, ask for as few fields as you need, and fetch full descriptions only for items you need to understand. The notes below cover common sources.
 
 **Time tracking**: never invent hours. If `time_tracking` names a tool you can't reach, say so in the report.
 
 If a configured source isn't available (connector missing, repo moved), continue with the rest and say what was skipped.
+
+### Known sources
+
+- **GitHub** (`gh` CLI): `gh search prs --author=@me --updated="<mon>..<sun>"`, plus `--reviewed-by=@me` and `--commenter=@me` for reviews and discussion. Add `--owner <org>` to narrow it down. Distinguish opened, merged and reviewed.
+- **Jira** (Atlassian connector): get the cloudId once with `getAccessibleAtlassianResources`. Query:
+  ```
+  (assignee = currentUser() OR reporter = currentUser() OR assignee was currentUser() DURING ("<mon>","<sun>"))
+  AND updated >= "<mon>" ORDER BY updated DESC
+  ```
+  Request only `summary`, `status` and `created`. Check `created` before claiming an issue was created during the week.
+- **Linear / Azure DevOps / GitHub Issues**: same idea as Jira: items assigned to or created by the user, updated in the week, with state changes. "Updated" doesn't mean "done", so check the state.
+- **Meeting notes** (Confluence, Notion, Google Docs…): take the meetings dated inside the week, including agenda, decisions and notes. Dates on running note pages can be wrong: cross-check with issues mentioned in an entry (for example an issue created after the stated date), put the meeting in the week the evidence points to, and tell the user.
+- **Calendar**: use it for meetings and for days off. Never treat a calendar event as proof that work got done.
 
 ## 3. Write the journal
 
