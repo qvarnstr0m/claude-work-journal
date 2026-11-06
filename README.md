@@ -62,9 +62,16 @@ examples/                        a fictional week for reference
 - **Sources**: add an entry under `sources` in `journal.config.yml`. If a source needs more detailed handling, add a note under "Known sources" in `.claude/skills/weekly-journal/SKILL.md`.
 - **Rules**: everything else in `SKILL.md` is plain instructions you can edit.
 
-## Privacy
+## Privacy and security
 
 `scripts/claude_history.py` reads `~/.claude/history.jsonl` locally and only prints prompts from the requested week. Nothing is sent anywhere except through your Claude Code session. Your journal stays in your own repo.
+
+Things to be aware of:
+
+- **Your prompt history may contain secrets.** Anything you have typed or pasted into Claude Code, such as tokens, connection strings or customer data, is part of the input. The skill is told never to copy secrets into the journal, but read each journal before you push it. With `auto_commit: true` (the default) the journal is committed locally without review; it is never pushed automatically. A secret scanner such as [gitleaks](https://github.com/gitleaks/gitleaks) as a pre-commit hook adds a safety net.
+- **Extra sources are written by other people.** Issues, wiki pages and PR comments can contain text that tries to give Claude instructions. The skill treats source content as data only, but keep the sources you enable to ones you trust, and review what gets committed.
+- **Keep scratch files out of the repo.** The skill writes the week's prompt history to a scratch file in the session's scratchpad, or in `scratch/` if there is none. That file holds unfiltered prompts and should never be committed; `scratch/` is ignored by `.gitignore` for this reason.
+- **Client work:** if your employer or clients restrict what you may write down, list those projects under `exclude` and keep the repo private.
 
 ## License
 
