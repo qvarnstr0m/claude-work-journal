@@ -1,0 +1,58 @@
+# Configuration for the weekly-journal skill.
+# Claude reads this file every time it writes a journal. Only Claude Code
+# history is required; remove or disable any other source you don't use.
+
+# Language the journal files are written in, and the language Claude uses
+# when it reports back to you.
+journal_language: English
+reply_language: English
+
+# Your usual role, as it should appear in the journal.
+default_role: Software Developer
+
+# What you work on. `kind` is free text (client, product, hobby, open source...)
+# and only helps Claude describe the context. `repos` are matched against git
+# repos and against the project names in Claude Code history.
+projects:
+  - name: Customer Portal
+    kind: product
+    repos:
+      - ~/projects/customer-portal
+  - name: Trailmap
+    kind: hobby
+    repos:
+      - ~/projects/trailmap
+  # Consultant? List each client as a project:
+  # - name: Acme Logistics
+  #   kind: client
+  #   repos: [~/projects/acme-portal]
+
+# Work to keep out of the journal: repo or project names, or topics.
+# A consultant might exclude private projects; a hobbyist may leave this empty.
+exclude: []   # e.g. ["dotfiles", "trailmap", "personal admin"]
+
+# Git: extra directories to scan (in addition to the project repos above), and
+# how your commits are recognised. If `authors` is empty, the skill uses
+# `git config user.email` and `git config user.name`.
+git:
+  scan_dirs:
+    - ~/projects        # repos under here that show activity in the week are included
+  authors: []           # e.g. ["jane@work.com", "jane@private.com"]
+
+# Jira via the Atlassian MCP connector. Leave cloud_id empty to let the skill
+# look it up with getAccessibleAtlassianResources.
+jira:
+  enabled: false
+  cloud_id: ""
+
+# Confluence pages with running meeting notes (optional).
+confluence:
+  enabled: false
+  meeting_note_pages: []   # e.g. [{ id: "123456789", title: "Team / Meeting notes" }]
+
+# Time tracking tool, if any. The skill never invents hours; this is only
+# mentioned in the report so you know what's missing.
+time_tracking: none
+
+# Commit the journal automatically after writing it.
+auto_commit: true
