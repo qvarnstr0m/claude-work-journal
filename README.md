@@ -15,7 +15,7 @@ See [`examples/2026-W10.md`](examples/2026-W10.md) for a sample result (fictiona
 
 Six months later, nobody remembers what they did in week 10. Writing it down by hand doesn't happen. Your prompt history and commits already hold the record; this turns them into prose once a week, while you still remember enough to correct it.
 
-What people use it for:
+What people can use it for:
 
 - **Performance reviews and promotion cases**: a year of concrete, dated work instead of a blank page.
 - **Consulting**: assignment reports and CV updates per client.
