@@ -59,7 +59,7 @@ If a configured source isn't available (connector missing, repo moved), continue
 - **Leave out anything matching `exclude`.** Mention in the reply what was left out, so the user can ask for it.
 - **Don't name individual people.** Use roles such as "the tester", "a colleague" or "the product owner".
 - **Next Steps**: only follow-ups that are actually open at the end of that week.
-- When a week produces something worth keeping, suggest an addition to `highlights/achievements.md` or `highlights/technologies.md` in the reply. Don't edit those files unless the user agrees.
+- When a week produces something worth keeping, suggest an addition to `achievements.md` or `technologies.md` in `highlights_dir` (default `highlights/`) in the reply. Don't edit those files unless the user agrees.
 
 ## 4. Report and commit
 

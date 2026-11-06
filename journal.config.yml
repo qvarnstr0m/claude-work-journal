@@ -65,5 +65,8 @@ sources:
 # mentioned in the report so you know what's missing.
 time_tracking: none
 
+# Folder for achievements.md and technologies.md, distilled across weeks.
+highlights_dir: highlights/
+
 # Commit the journal automatically after writing it.
 auto_commit: true
