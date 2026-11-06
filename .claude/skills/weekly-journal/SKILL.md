@@ -24,10 +24,12 @@ The output can be 30KB+, so write it to a scratch file and read that instead of 
 **Git commits**: the repos listed under `projects[].repos`, plus repos under `git.scan_dirs` that show activity (from the history or from a commit in the week). Use full timestamps: a bare date in `--until` takes the current time of day and pulls in the next Monday's commits.
 ```
 for r in <repos>; do
-  echo "== $r"; git -C $r log --all --since="<mon>T00:00" --until="<sun>T23:59" --author="<author>" \
+  echo "== $r"; git -C $r log --all --regexp-ignore-case --since="<mon>T00:00" --until="<sun>T23:59" --author="<author>" \
     --format='%ad %s' --date=format:'%a %m-%d %H:%M' | sort -u | cut -c1-120; done
 ```
-`<author>` comes from `git.authors` (repeat `--author` for each), or from `git config user.email` / `user.name` when the list is empty.
+`<author>` comes from `git.authors` (repeat `--author` for each), or from `git config user.email` / `user.name` when the list is empty. Commits often carry another identity than the current config (a work vs. private email, a different spelling of the name), so if a repo the history shows as active returns nothing, retry with just the surname or username and suggest adding it to `git.authors`.
+
+`--since`/`--until` filter on commit date, but the output shows author date. A cherry-pick or rebase done this week therefore shows up with an author date from an earlier week. Treat such a commit as work from the week it was authored, and only mention it if the history shows real work on it this week (for example resolving conflicts or redeploying).
 
 **Extra sources**: for each entry in `sources` with `enabled: true`, follow its `how` instruction using whatever connector (MCP tool) or CLI fits. If you can't find a matching tool, skip the source and say so in the report. Limit every query to the week, ask for as few fields as you need, and fetch full descriptions only for items you need to understand. The notes below cover common sources.
 
